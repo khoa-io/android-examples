@@ -33,7 +33,7 @@ class RemoteService : Service() {
             )
         }
 
-        override fun sendParcel(parcel: MyParcel) {
+        override fun sendParcel(parcel: MyParcel, callback: ICallback) {
             Log.i(
                 TAG,
                 "Received parcel: anInt: '${parcel.anInt}', " +
@@ -43,6 +43,8 @@ class RemoteService : Service() {
                         "aDouble: '${parcel.aDouble}', " +
                         "aString: '${parcel.aString}'"
             )
+
+            callback.onFinished()
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import dev.khoa.androidprocessexample.ICallback
 import dev.khoa.androidprocessexample.IRemoteService
 import dev.khoa.androidprocessexample.MyParcel
 import dev.khoa.androidprocessexample.myclient.databinding.ActivityClientMainBinding
@@ -22,6 +23,13 @@ class ClientMainActivity : AppCompatActivity() {
     private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     private var iRemoteService: IRemoteService? = null
+
+    private var callback = object : ICallback.Stub() {
+        override fun onFinished() {
+            Log.i(TAG, "sendParcel execution has been done")
+        }
+    }
+
     private val mConnection = object : ServiceConnection {
 
         // Called when the connection with the service is established
@@ -40,7 +48,7 @@ class ClientMainActivity : AppCompatActivity() {
             parcel.aFloat = 0.21f
             parcel.aDouble = 0.21
             parcel.aString = "A String"
-            iRemoteService!!.sendParcel(parcel)
+            iRemoteService!!.sendParcel(parcel, callback)
         }
 
         override fun onBindingDied(name: ComponentName?) {
